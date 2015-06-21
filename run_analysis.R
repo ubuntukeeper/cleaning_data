@@ -46,8 +46,10 @@ run_analysis <- function(directory) {
 
     #calculate aggregates by grouping by subject and activity
     result <- aggregate(x_with_y_and_subj[, 1:ncol(x_with_y_and_subj) - 1], by=list(x_with_y_and_subj$subject, x_with_y_and_subj$activity), mean)
-    # drop grouping columns
-    trimmed_result <- result[, 3:ncol(x_with_y_and_subj)]
+    #drop column with subject, it is duplicate
+    trimmed_result <- result[, 2:ncol(x_with_y_and_subj)]
+    #rename grouping column to activity
+    colnames(trimmed_result)[1] <- c("activity")
     #write result to file in working directory
     write.table(trimmed_result, file="./result.txt", row.name=FALSE)
 }
